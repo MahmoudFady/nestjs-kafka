@@ -1,6 +1,6 @@
 import { Kafka, Message, Producer } from 'kafkajs';
-import { IProducer } from './types/producer.type';
-import { TopicNames } from './types/topic-names.enum';
+import { IProducer } from '../types/producer.type';
+import { TopicNames } from '../types/topic-names.enum';
 
 export class KafkaProducer implements IProducer {
   private readonly kafka: Kafka;

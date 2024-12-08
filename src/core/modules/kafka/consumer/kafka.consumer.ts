@@ -5,7 +5,7 @@ import {
   Kafka,
   KafkaMessage,
 } from 'kafkajs';
-import { IConsumer } from './types/consumer.type';
+import { IConsumer } from '../types/consumer.type';
 
 export class KafkaConsumer implements IConsumer {
   private readonly kafka: Kafka;

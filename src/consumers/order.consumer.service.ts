@@ -1,5 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { ConsumerService } from 'src/core/modules/kafka/consumer.service';
+import { ConsumerService } from 'src/core/modules/kafka/consumer/consumer.service';
 import { TopicNames } from 'src/core/modules/kafka/types/topic-names.enum';
 
 @Injectable()

@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ProducerService } from './core/modules/kafka/producer.service';
 import { TopicNames } from './core/modules/kafka/types/topic-names.enum';
+import { ProducerService } from './core/modules/kafka/producer/producer.service';
 
 @Controller()
 export class AppController {
