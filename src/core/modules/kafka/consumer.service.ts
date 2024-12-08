@@ -9,17 +9,19 @@ export class ConsumerService implements OnApplicationShutdown {
 
   constructor(private readonly configService: ConfigService) {}
 
-  async consume({ topic, config, onMessage }: KafkaConsumerOptions) {
+  async consume(
+    { topic, config, onMessage }: KafkaConsumerOptions,
+    retries?: number,
+  ) {
     const consumer = new KafkaConsumer(
       topic,
       this.configService.get('kafka.brokers'),
-      config,
       this.configService.get('kafka.clientId'),
+      config,
     );
     await consumer.connect();
-    await consumer.consume(onMessage);
+    await consumer.consume(onMessage, retries);
     this.consumers.push(consumer);
-    console.log(topic.topics, 'listening');
   }
 
   onApplicationShutdown() {

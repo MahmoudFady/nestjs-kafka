@@ -2,18 +2,20 @@ import { Injectable, OnApplicationShutdown } from '@nestjs/common';
 import { IProducer } from './types/producer.type';
 import { ConfigService } from '@nestjs/config';
 import { KafkaProducer } from './kafka.producer';
+import { Message } from 'kafkajs';
+import { TopicNames } from './types/topic-names.enum';
 
 @Injectable()
 export class ProducerService implements OnApplicationShutdown {
   private readonly producers = new Map<string, IProducer>();
   constructor(private readonly configService: ConfigService) {}
 
-  async produce(topic: string, message: { value: any }) {
+  async produce(topic: TopicNames, message: Message) {
     const producer = await this.getProducer(topic);
     await producer.produce(message);
   }
 
-  private async getProducer(topic: string): Promise<IProducer> {
+  private async getProducer(topic: TopicNames): Promise<IProducer> {
     let producer = this.producers.get(topic);
     if (!producer) {
       producer = new KafkaProducer(

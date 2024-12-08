@@ -15,15 +15,17 @@ export class KafkaConsumer implements IConsumer {
   constructor(
     private readonly topic: ConsumerSubscribeTopics,
     brokers: string[],
-    config: ConsumerConfig,
     clientId: string,
+    config: ConsumerConfig,
   ) {
     this.kafka = new Kafka({ brokers, clientId });
     this.consumer = this.kafka.consumer(config);
   }
   async consume(
     onMessage: (message: KafkaMessage) => Promise<void>,
+    retries?: number,
   ): Promise<void> {
+    retries = retries || this.retries;
     await this.consumer.subscribe(this.topic);
     await this.consumer.run({
       eachMessage: async ({ message }) => {
@@ -34,8 +36,8 @@ export class KafkaConsumer implements IConsumer {
             return;
             // move to dlq queue
           }
-          this.retries -= 1;
-          return await this.consume(onMessage);
+          retries -= 1;
+          return await this.consume(onMessage, retries);
         }
       },
     });

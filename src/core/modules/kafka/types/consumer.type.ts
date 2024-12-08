@@ -1,4 +1,5 @@
 import { ConsumerSubscribeTopics, ConsumerConfig, KafkaMessage } from 'kafkajs';
+import { TopicNames } from './topic-names.enum';
 
 export interface IConsumer {
   connect: () => Promise<void>;
