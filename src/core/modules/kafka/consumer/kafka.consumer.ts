@@ -29,16 +29,19 @@ export class KafkaConsumer implements IConsumer {
     await this.consumer.subscribe(this.topic);
     await this.consumer.run({
       eachMessage: async ({ message }) => {
-        try {
-          return await onMessage(message);
-        } catch (e) {
-          if (this.retries == 0) {
+        while (retries > 0) {
+          try {
+            await onMessage(message);
             return;
-            // move to dlq queue
+          } catch (e) {
+            retries -= 1;
+            if (retries == 0) {
+              console.log('moving to dl queue');
+              return;
+            }
           }
-          retries -= 1;
-          return await this.consume(onMessage, retries);
         }
+         
       },
     });
   }
